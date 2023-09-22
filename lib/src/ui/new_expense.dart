@@ -1,8 +1,12 @@
 import 'package:expense_tracker/src/expense_tracker_library.dart';
-import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({
+    super.key,
+    required this.onAddExpense,
+  });
+
+  final Function(Expense expense) onAddExpense;
 
   @override
   State<StatefulWidget> createState() => _NewExpenseState();
@@ -12,6 +16,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? pickedDate;
+  Category _selectedCategory = Category.leisure;
   var selectedDate = 'Select Date';
 
   void _presentDatePicker() async {
@@ -28,6 +33,37 @@ class _NewExpenseState extends State<NewExpense> {
       setState(() {
         selectedDate = formatter.format(pickedDate!);
       });
+    }
+  }
+
+  void addExpense() {
+    if (_titleController.text.isNotEmpty ||
+        _amountController.text.isNotEmpty ||
+        pickedDate != null) {
+      widget.onAddExpense(
+        Expense(
+          title: _titleController.text,
+          amount: 1.1,
+          date: pickedDate!,
+          category: _selectedCategory,
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Warning"),
+          content: const Text("Please fill all fields!"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text("Okay"),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -83,6 +119,24 @@ class _NewExpenseState extends State<NewExpense> {
           ),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category.categoryName),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  }
+                },
+              ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -90,10 +144,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text("Cancel"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: addExpense,
                 child: const Text("Save Expense"),
               ),
             ],
