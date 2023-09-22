@@ -24,7 +24,9 @@ class _ExpensesState extends State<Expenses> {
   ];
 
   void _addNewExpense(Expense expense) {
-    _registeredExpenses.add(expense);
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
   }
 
   void _openAddExpenseOverlay() {
