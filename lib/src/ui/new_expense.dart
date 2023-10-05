@@ -37,19 +37,11 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void addExpense() {
-    if (_titleController.text.isNotEmpty ||
-        _amountController.text.isNotEmpty ||
-        pickedDate != null) {
-      widget.onAddExpense(
-        Expense(
-          title: _titleController.text,
-          amount: 1.1,
-          date: pickedDate!,
-          category: _selectedCategory,
-        ),
-      );
-      Navigator.pop(context);
-    } else {
+    double? amount = double.tryParse(_amountController.text.trim());
+    final amountIsInvalid = amount == null || amount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        pickedDate == null) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -65,6 +57,17 @@ class _NewExpenseState extends State<NewExpense> {
           ],
         ),
       );
+      return;
+    } else {
+      widget.onAddExpense(
+        Expense(
+          title: _titleController.text,
+          amount: amount,
+          date: pickedDate!,
+          category: _selectedCategory,
+        ),
+      );
+      Navigator.pop(context);
     }
   }
 
@@ -118,6 +121,9 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
+          const SizedBox(
+            height: 16,
+          ),
           Row(
             children: [
               DropdownButton(
@@ -138,6 +144,7 @@ class _NewExpenseState extends State<NewExpense> {
                   }
                 },
               ),
+              const Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
