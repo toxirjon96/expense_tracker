@@ -17,11 +17,17 @@ class ExpensesItem extends StatelessWidget {
           vertical: 16,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(expense.title),
+            Text(
+              expense.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             Row(
               children: [
-                Text(expense.category.categoryName),
+                Text(
+                  expense.category.categoryName,
+                ),
                 const Spacer(),
                 Row(
                   children: [
