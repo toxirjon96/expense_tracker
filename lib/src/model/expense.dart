@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 final formatter = DateFormat.yMd();
 const _uuid = Uuid();
 
-const _categoryIcon = {
+const categoryIcons = {
   Category.food: Icons.lunch_dining,
   Category.travel: Icons.flight_takeoff,
   Category.leisure: Icons.movie,
@@ -30,6 +30,6 @@ class Expense {
   }
 
   Icon get categoryIcon {
-    return Icon(_categoryIcon[category]);
+    return Icon(categoryIcons[category]);
   }
 }
