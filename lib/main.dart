@@ -9,12 +9,20 @@ void main() {
       debugShowCheckedModeBanner: false,
       title: "Expense tracker",
       theme: ThemeData().copyWith(
-          useMaterial3: true,
-          colorScheme: kColorSchema,
-          appBarTheme: const AppBarTheme().copyWith(
-            backgroundColor: kColorSchema.onPrimaryContainer,
-            foregroundColor: kColorSchema.primaryContainer,
-          )),
+        useMaterial3: true,
+        colorScheme: kColorSchema,
+        appBarTheme: const AppBarTheme().copyWith(
+          backgroundColor: kColorSchema.onPrimaryContainer,
+          foregroundColor: kColorSchema.primaryContainer,
+        ),
+        cardTheme: const CardTheme().copyWith(
+          color: kColorSchema.secondaryContainer,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+        ),
+      ),
       home: const Expenses(),
     ),
   );
